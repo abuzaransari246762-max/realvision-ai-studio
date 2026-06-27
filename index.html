@@ -1,28 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RealVision AI Studio</title>
-
+<title>RealVision AI Studio Pro</title>
 <style>
 body{
 background:#0b0615;
-font-family:Arial,sans-serif;
 color:white;
+font-family:Arial;
 text-align:center;
 padding:20px;
 }
-
-.container{
+.box{
 max-width:900px;
 margin:auto;
+background:#171122;
+padding:20px;
+border-radius:20px;
 }
-
-h1{
-color:#b56cff;
-}
-
+h1{color:#b56cff;}
 textarea{
 width:90%;
 height:120px;
@@ -33,20 +28,19 @@ padding:15px;
 border-radius:12px;
 font-size:16px;
 }
-
+select,button{
+margin:10px;
+padding:12px;
+border:none;
+border-radius:10px;
+}
 button{
-margin-top:20px;
-padding:15px 30px;
 background:#8a2be2;
 color:white;
-border:none;
-border-radius:12px;
-font-size:18px;
 cursor:pointer;
 }
-
 img{
-margin-top:30px;
+margin-top:20px;
 width:95%;
 max-width:700px;
 border-radius:15px;
@@ -56,32 +50,58 @@ border-radius:15px;
 
 <body>
 
-<div class="container">
-<h1>RealVision AI Studio</h1>
-<p>Create Real AI Generated Images</p>
+<div class="box">
+<h1>RealVision AI Studio Pro</h1>
 
-<textarea id="prompt" placeholder="Write prompt here..."></textarea>
+<textarea id="prompt" placeholder="Enter your prompt..."></textarea>
+
 <br>
 
-<button onclick="generateImage()">Generate AI Image</button>
+<select id="style">
+<option>Realistic</option>
+<option>Cinematic</option>
+<option>Documentary</option>
+<option>Anime</option>
+</select>
 
+<br>
+
+<button onclick="enhancePrompt()">Enhance Prompt</button>
+<button onclick="generateImage()">Generate HD Image</button>
+
+<div id="showPrompt"></div>
 <div id="result"></div>
+
 </div>
 
 <script>
-function generateImage() {
- let prompt = document.getElementById("prompt").value;
 
- if(prompt==""){
-   alert("Enter prompt first");
-   return;
- }
+let finalPrompt="";
 
- let imageUrl = "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt);
+function enhancePrompt(){
 
- document.getElementById("result").innerHTML =
- "<h3>Generating...</h3><img src='" + imageUrl + "'>";
+let prompt=document.getElementById("prompt").value;
+let style=document.getElementById("style").value;
+
+finalPrompt=prompt + " ultra detailed, 8k, highly realistic, " + style + " lighting, professional photography";
+
+document.getElementById("showPrompt").innerHTML=
+"<p>Enhanced Prompt:<br>"+finalPrompt+"</p>";
 }
+
+function generateImage(){
+
+if(finalPrompt==""){
+alert("Enhance prompt first");
+return;
+}
+
+let url="https://image.pollinations.ai/prompt/"+encodeURIComponent(finalPrompt);
+
+document.getElementById("result").innerHTML=
+"<h3>Generating...</h3><img id='img' src='"+url+"'><br><br><a id='download' href='"+url+"' download><button>Download</button></a>";
+}
+
 </script>
 
 </body>
